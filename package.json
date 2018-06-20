@@ -6,7 +6,7 @@
     "scripts": {
         "build": "react-scripts build",
         "electron": "electron .",
-        "start": "react-scripts start"
+        "start": "pm2 start process.config.js && pm2 logs"
     },
     "author": "Nathan Carlson",
     "license": "MIT",

@@ -11,6 +11,6 @@ A configurable node.js trading engine
     ```
 - Run `yarn`
 
-## Run arbitrage-bot
+## Start arbitrage-bot
 
-`pm2 start process.config.js && pm2 logs`
+`yarn start`
