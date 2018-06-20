@@ -42,14 +42,14 @@ class Binance extends Exchange {
         try {
             const timestamp = new Date().getTime()
 
-            const totalParams = `https://api.binance.com/api/v3/account?timestamp=${timestamp}`
+            const totalParams = `timestamp=${timestamp}`
     
-            const balances = (await this.v3HttpClient.get(`/account?timestamp=${timestamp}`, {
+            const balances = (await this.v3HttpClient.get(`/account?${totalParams}`, {
                 headers: {
                     'X-MBX-APIKEY': this.apiKey,
                 },
                 params: {
-                    signature: this.hmacSha256(`timestamp=${timestamp}`),
+                    signature: this.hmacSha256(totalParams),
                 },
             })).data.balances
 
