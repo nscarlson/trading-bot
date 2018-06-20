@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             cwd: 'src/',
-            name: 'stablecoin-bot',
+            name: 'arbitrage-bot',
             script: 'src/index.js',
         },
     ],

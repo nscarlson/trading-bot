@@ -1,5 +1,5 @@
 {
-    "name": "stablecoin-bot",
+    "name": "arbitrage-bot",
     "version": "1.0.0",
     "description": "",
     "main": "src/index.js",
