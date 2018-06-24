@@ -1,24 +1,31 @@
 import 'source-map-support/register'
 
-import EventEmitter from 'events'
-
+import TriangularArbitrage from './services/TriangularArbitrage'
 import Binance from './services/Binance'
 
-const emitter = new EventEmitter()
-
-// TODO: Implement a solutiont that fetches all configured exchanges dynamically
 const binance = new Binance()
+const triangularArbitrage = new TriangularArbitrage()
 
+const contexts = [triangularArbitrage]
 const exchanges = [binance]
 
 const engine = async () => {
     for (let i = 0; i < exchanges.length; i++) {
-        const result = await exchanges[i].getOrderBook({
+        await exchanges[i].getOrderBook({
             baseSymbol: 'USDT',
             quoteSymbol: 'BTC',
         })
 
         await exchanges[i].getBalances(['BTC', 'USDT'])
+
+        await exchanges[i].createOrder({
+            baseSymbol: 'USDT',
+            quantity: '55',
+            price: '4000',
+            quoteSymbol: 'BTC',
+            side: 'BUY',
+            type: 'LIMIT',
+        })
     }
 }
 

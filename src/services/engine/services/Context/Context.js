@@ -1,7 +1,5 @@
 class Context {
-    constructor ({ tradingPairs }) {
-        this.tradingPairs = tradingPairs
-    }
-
     tradingPairs = []
 }
+
+export default from Context
