@@ -1,7 +1,85 @@
 class TriangularArbitrage {
-    constructor() {}
+    constructor(context) {
+        super(context)
 
-    test = () => {}
+        this.context = context
+        this.assets = ['BTC', 'ETH', 'USDT']
+
+        // TODO: Let the TriangularArbitrage context select arbitrary frames to receive
+        this.frames = context.frames
+    }
+
+    assets = null
+    context = null
+    frames = null
+
+    /**
+     * 
+     */
+    calculateProfit = () => {
+
+    }
+
+    findBest = (frames) => {
+
+    }
+
+    /**
+     * Identify needed frame for the trading pair
+     * 
+     * For example, for BTC, ETH, and USDT, we will be processing BTCUSDT, ETHUSDT, ETHBTC frames.
+     */
+    findFrame = (symbolPair) =>
+        this.frames.filter((frame) => [frame.baseAsset, frame.quoteAsset].sort() === symbolPair.sort())
+
+    /**
+     * Test a particular arbitrage triangle
+     * For example, BTC -> ETH -> USDT -> BTC
+     */
+    testTriangle = (frames, triangle) => {
+        const profit = 0
+
+        let sequence = []
+
+        triangle.forEach((asset, i, arr) => {
+            const nextAsset = triangle[(i + 1) % 2]
+
+            const frame = this.findFrame([asset, nextAsset])
+
+            // Determine which side of orderbook for the trade 
+            // needed to move asset -> nextAsset
+            const side = frame.baseAsset === nextAsset ? 'SELL' : 'BUY'
+            
+            // Get amount of asset available to trade
+            const amount = this.context.exchange.balances[nextAsset]
+            
+            // Get best bid/ask rate
+            const bestRate = frame[side === 'SELL' ? 'asks' : 'bids'][0]
+
+            const order = {
+                amount,
+                side,
+                type: 'LIMIT',
+            }
+
+            sequence.push(order)
+
+            if (this.calculateProfit(sequence) > 0) {
+                return order
+            }
+
+            return null
+        })
+    }
+
+    testFrame = (frame) => {
+        // Process each asset
+        for (int i = 0; i < assets.length; i++) {
+            const asset1 = i % 2
+            const asset2 = (i + 1) % 2
+            const asset3 = (i + 2) % 2
+        }
+    }
 }
 
 export default TriangularArbitrage

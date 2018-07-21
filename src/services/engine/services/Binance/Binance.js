@@ -119,6 +119,7 @@ class Binance extends Exchange {
 
     getOrderBook = async ({
         baseSymbol,
+        // TODO: don't hardcode rate-limiting config
         limit = 1000,
         quoteSymbol,
     }) => {
