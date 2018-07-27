@@ -1,16 +1,18 @@
-class TriangularArbitrage {
-    constructor(context) {
-        super(context)
+import Context from '../Context'
 
-        this.context = context
+class TriangularArbitrage extends Context {
+    constructor(state) {
+        super(state)
+
+        this.state = state
         this.assets = ['BTC', 'ETH', 'USDT']
 
-        // TODO: Let the TriangularArbitrage context select arbitrary frames to receive
-        this.frames = context.frames
+        // TODO: Let TriangularArbitrage select arbitrary frames to receive
+        this.frames = state.frames
     }
 
     assets = null
-    context = null
+    state = null
     frames = null
 
     /**
@@ -74,7 +76,7 @@ class TriangularArbitrage {
 
     testFrame = (frame) => {
         // Process each asset
-        for (int i = 0; i < assets.length; i++) {
+        for (let i = 0; i < assets.length; i++) {
             const asset1 = i % 2
             const asset2 = (i + 1) % 2
             const asset3 = (i + 2) % 2

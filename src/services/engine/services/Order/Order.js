@@ -1,3 +1,10 @@
+const states = {
+    CREATED: 0,
+    FAILED: 1,
+    QUEUED: 2,
+    SUCCESS: 3,
+}
+
 class Order {
     constructor({
         exchange,

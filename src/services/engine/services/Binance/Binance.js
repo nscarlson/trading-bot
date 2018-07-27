@@ -8,7 +8,9 @@ import Exchange from '../Exchange'
 
 class Binance extends Exchange {
     constructor () {
-        super()
+        super({
+            exchangeName: 'binance'
+        })
         this.createV1HttpClient()
         this.createV3HttpClient()
     }
@@ -131,7 +133,7 @@ class Binance extends Exchange {
                 }
             })).data
 
-            console.log(`${moment().format()} | orderbook info   | Bid: ${result.bids[0][0]} Ask: ${result.asks[0][0]}`)
+            console.log(`${moment().format()} | ${this.exchangeName} | orderbook info   | Bid: ${result.bids[0][0]} Ask: ${result.asks[0][0]}`)
         } catch(err) {
             console.error(err)
         }
