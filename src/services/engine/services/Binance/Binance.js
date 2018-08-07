@@ -1,7 +1,8 @@
 import axios from 'axios'
 import crypto from 'crypto'
-import moment from 'moment'
+import moment, { duration } from 'moment'
 import querystring from 'querystring'
+import rateLimit from 'function-rate-limit'
 import uuid from 'uuid/v4'
 
 import Exchange from '../Exchange'
@@ -11,15 +12,26 @@ class Binance extends Exchange {
         super({
             exchangeName: 'binance'
         })
+
         this.createV1HttpClient()
         this.createV3HttpClient()
+
+        this.requestLimit = moment(1200, this.mapDurationName('minutes')).valueOf()
+        this.orderLimit = moment(10, this.mapDurationName('seconds')).valueOf()
     }
 
     apiKey = process.env.BINANCE_API_KEY
     apiSecretKey = process.env.BINANCE_SECRET_KEY
 
+    asyncIterator = null
+
+    exchangeInfo = null
+
     v1HttpClient = null
     v3HttpClient = null
+
+    requestLimit = null
+    orderLimit = null
 
     // getOrder = async ({
     //     baseSymbol,
@@ -79,7 +91,7 @@ class Binance extends Exchange {
     }
 
     createV1HttpClient = () => {
-        console.log('Initializing Binance v1 client...')
+        console.log(`Initializing ${this.exchangeName} v1 client...`)
         this.v1HttpClient = axios.create({
             baseURL: 'https://api.binance.com/api/v1',
             timeout: 5000,
@@ -87,9 +99,6 @@ class Binance extends Exchange {
     }
 
     createV3HttpClient = () => {
-
-        console.log('apiKey:', this.apiKey)
-
         console.log('Initializing Binance v3 connection...')
         this.v3HttpClient = axios.create({
             baseURL: 'https://api.binance.com/api/v3',
@@ -119,6 +128,15 @@ class Binance extends Exchange {
         }
     }
 
+    getExchangeInfo = async () => {
+        try {
+            const info = (await this.v1HttpClient.get('/exchangeInfo')).data
+            console.log('rateLimits', info.rateLimits)
+        } catch(err) {
+            console.error(err)
+        }
+    }
+
     getOrderBook = async ({
         baseSymbol,
         // TODO: don't hardcode rate-limiting config
@@ -139,10 +157,22 @@ class Binance extends Exchange {
         }
     }
 
+    /**
+     * TODO: Move this to utils if hmac functionality is needed in multiple places
+     * @returns 
+     */
     hmacSha256 = (message) => crypto.createHmac('sha256', this.apiSecretKey)
             .update(message)
             .digest()
             .toString('hex')
+
+    rateLimitOrders = () => {
+
+    }
+
+    rateLimitRequests = () => {
+
+    }
 }
 
 export default Binance

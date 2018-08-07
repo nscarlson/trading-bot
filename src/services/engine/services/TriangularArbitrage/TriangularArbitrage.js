@@ -23,12 +23,11 @@ class TriangularArbitrage extends Context {
     }
 
     findBest = (frames) => {
-
+        
     }
 
     /**
      * Identify needed frame for the trading pair
-     * 
      * For example, for BTC, ETH, and USDT, we will be processing BTCUSDT, ETHUSDT, ETHBTC frames.
      */
     findFrame = (symbolPair) =>
@@ -39,17 +38,18 @@ class TriangularArbitrage extends Context {
      * For example, BTC -> ETH -> USDT -> BTC
      */
     testTriangle = (frames, triangle) => {
-        const profit = 0
-
-        let sequence = []
+        let orderSequence = []
 
         triangle.forEach((asset, i, arr) => {
             const nextAsset = triangle[(i + 1) % 2]
 
             const frame = this.findFrame([asset, nextAsset])
 
-            // Determine which side of orderbook for the trade 
-            // needed to move asset -> nextAsset
+            /**
+             * Determine which side of orderbook for the trade 
+             * needed to move asset -> nextAsset
+             */
+
             const side = frame.baseAsset === nextAsset ? 'SELL' : 'BUY'
             
             // Get amount of asset available to trade
@@ -64,9 +64,9 @@ class TriangularArbitrage extends Context {
                 type: 'LIMIT',
             }
 
-            sequence.push(order)
+            orderSequence.push(order)
 
-            if (this.calculateProfit(sequence) > 0) {
+            if (this.calculateProfit(orderSequence) > 0) {
                 return order
             }
 
@@ -80,6 +80,12 @@ class TriangularArbitrage extends Context {
             const asset1 = i % 2
             const asset2 = (i + 1) % 2
             const asset3 = (i + 2) % 2
+        }
+    }
+
+    init = () => {
+        while (true) {
+            this.findBest()
         }
     }
 }

@@ -4,6 +4,7 @@ import TriangularArbitrage from './services/TriangularArbitrage'
 import Binance from './services/Binance'
 
 const binance = new Binance()
+
 const triangularArbitrage = new TriangularArbitrage({
     state: {
         frames: ['BTCUSDT', 'ETHBTC', 'ETHUSDT']
@@ -15,7 +16,7 @@ const exchanges = [binance]
 
 async function* theGenerator(stream) {
     // Get lock on stream
-    const reacder = stream.getReader()
+    const reader = stream.getReader()
 
     try {
         while(true) {
@@ -47,16 +48,16 @@ async function* theGenerator(stream) {
 
 const engine = async () => {
     for (let i = 0; i < exchanges.length; i++) {
-        await exchanges[i].getOrderBook({
-            baseSymbol: 'USDT',
-            quoteSymbol: 'BTC',
-        })
+        // await exchanges[i].getOrderBook({
+        //     baseSymbol: 'USDT',
+        //     quoteSymbol: 'BTC',
+        // })
 
-        contexts.forEach((() => {
+        // contexts.forEach((() => {
             
-        }))
+        // }))
 
-        await exchanges[i].getBalances(['BTC', 'USDT'])
+        // await exchanges[i].getBalances(['BTC', 'USDT'])
 
 
         // await exchanges[i].createOrder({

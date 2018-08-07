@@ -5,8 +5,10 @@ class Exchange {
 
     exchangeName = null
     
-    getOrderBook = () => {}
     createOrder = () => {}
+    getOrderBook = () => {}
+
+    rateLimit = () => {}
 }
 
 export default Exchange
