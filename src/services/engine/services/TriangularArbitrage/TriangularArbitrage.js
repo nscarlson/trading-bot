@@ -1,30 +1,32 @@
 import Context from '../Context'
+import config from './config'
 
 class TriangularArbitrage extends Context {
-    constructor(state) {
-        super(state)
+    constructor({
+        engine
+    }) {
+        super()
 
-        this.state = state
-        this.assets = ['BTC', 'ETH', 'USDT']
-
-        // TODO: Let TriangularArbitrage select arbitrary frames to receive
-        this.frames = state.frames
+        this.assets = config.assets
+        this.frames = config.frames
     }
+
+    engine = null
 
     assets = null
-    state = null
     frames = null
 
-    /**
-     * 
-     */
-    calculateProfit = () => {
+    calculateProfit = (orders) => {
+        const rates = map((order) => order.price)
 
+        orders.reduce((acc, order, index) => {
+            
+        })
+
+        orders.reduce()
     }
 
-    findBest = (frames) => {
-        
-    }
+    findBest = (frames) => {}
 
     /**
      * Identify needed frame for the trading pair
@@ -58,11 +60,11 @@ class TriangularArbitrage extends Context {
             // Get best bid/ask rate
             const bestRate = frame[side === 'SELL' ? 'asks' : 'bids'][0]
 
-            const order = {
+            const order = new Order({
                 amount,
                 side,
                 type: 'LIMIT',
-            }
+            })
 
             orderSequence.push(order)
 
