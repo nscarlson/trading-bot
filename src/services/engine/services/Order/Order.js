@@ -36,8 +36,6 @@ class Order {
         side,
         type
     }) {
-        super()
-
         this.price = price
         this.quantity = quantity
         this.side = side
