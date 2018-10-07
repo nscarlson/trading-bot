@@ -1,4 +1,4 @@
-import "source-map-support/register";
+import config from './config'
 
 import TriangularArbitrage from "./services/TriangularArbitrage";
 import Binance from "./services/Binance";
@@ -10,14 +10,7 @@ const triangularArbitrage = new TriangularArbitrage({
 });
 import sms from "../sms";
 
-const binance = new Binance();
-
-const contexts = [triangularArbitrage];
-const exchanges = [binance];
-
-sms.sendSms({
-  body: `${new Date()} The engine is starting`
-});
+const exchanges = config.exchanges
 
 async function* theGenerator(stream) {
   // Get lock on stream
@@ -48,9 +41,19 @@ async function* theGenerator(stream) {
     reader.releaseLock();
   }
 }
+class Engine {
+    constructor() {
+      this.contexts = config.contexts
 
-const engine = async () => {
-  for (let i = 0; i < exchanges.length; i++) {
+      for (exchange of exchanges) {
+        this.exchanges.push(new exchange())
+      }
+    }
+
+    contexts = []
+    exchanges = []
+}
+    // for (let i = 0; i < exchanges.length; i++) {
     // await exchanges[i].getOrderBook({
     //     baseSymbol: 'USDT',
     //     quoteSymbol: 'BTC',
@@ -66,8 +69,8 @@ const engine = async () => {
     //     side: 'BUY',
     //     type: 'LIMIT',
     // })
-  }
-};
+    // }
+    // };
 
 /**
  * Get all frames for each context, from each configured exchange
@@ -102,8 +105,4 @@ const engine = async () => {
 //     return frames
 // }
 
-const init = async () => {
-  setInterval(engine, 1000);
-};
-
-export default init();
+export default Engine;
