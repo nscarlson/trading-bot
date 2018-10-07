@@ -104,9 +104,7 @@ class Binance extends Exchange {
   };
 
   createV3HttpClient = () => {
-    console.info("apiKey:", this.apiKey);
-
-    console.info("Initializing Binance v3 connection...");
+    console.info("Initializing Binance v3 client...");
     this.v3HttpClient = axios.create({
       baseURL: "https://api.binance.com/api/v3",
       timeout: 5000
@@ -128,7 +126,7 @@ class Binance extends Exchange {
       })).data.balances;
 
       createV1HttpClient = () => {
-        console.log(`Initializing ${this.exchangeName} v1 client...`);
+        console.info(`Initializing ${this.exchangeName} v1 client...`);
         this.v1HttpClient = axios.create({
           baseURL: "https://api.binance.com/api/v1",
           timeout: 5000
@@ -136,7 +134,7 @@ class Binance extends Exchange {
       };
 
       createV3HttpClient = () => {
-        console.log("Initializing Binance v3 connection...");
+        console.info("Initializing Binance v3 connection...");
         this.v3HttpClient = axios.create({
           baseURL: "https://api.binance.com/api/v3",
           timeout: 5000
@@ -151,7 +149,7 @@ class Binance extends Exchange {
     getExchangeInfo = async () => {
       try {
         const info = (await this.v1HttpClient.get("/exchangeInfo")).data;
-        console.log("rateLimits", info.rateLimits);
+        console.info("rateLimits", info.rateLimits);
       } catch (err) {
         console.error(err);
       }
@@ -171,7 +169,7 @@ class Binance extends Exchange {
           }
         })).data;
 
-        console.log(
+        console.info(
           `${moment().format()} | ${
             this.exchangeName
           } | orderbook info   | Bid: ${result.bids[0][0]} Ask: ${
@@ -183,7 +181,7 @@ class Binance extends Exchange {
       }
     };
 
-    console.log(
+    console.info(
       `${moment().format()} | orderbook info   | Bid: ${
         result.bids[0][0]
       } Ask: ${result.asks[0][0]}`
