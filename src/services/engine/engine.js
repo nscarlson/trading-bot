@@ -30,11 +30,11 @@ async function* theGenerator(stream) {
 
       // Exit if done
       if (done) {
-        return;
+        return
       }
 
       // Else, yield
-      yield value;
+      yield value
     }
   } finally {
     /**

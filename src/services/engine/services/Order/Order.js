@@ -5,13 +5,35 @@ const states = {
     SUCCESS: 3,
 }
 
+const types = {
+    LIMIT: 0,
+    MARKET: 1,
+}
+
+const sides = {
+    BUY: 0,
+    SELL: 1,
+}
+
+/**
+ * Order class
+ */
 class Order {
+    /**
+     * Create an Order
+     * @param {string} baseSymbol
+     * @param {number} price
+     * @param {number} quantity
+     * @param {string} quoteSymbol
+     * @param {string} side 
+     * @param {string} type Type of order
+     */
     constructor({
-        exchange,
+        baseSymbol,
         price,
         quantity,
+        quoteSymbol,
         side,
-        timeInForce,
         type
     }) {
         super()
@@ -28,14 +50,6 @@ class Order {
     side = null
     timeInForce = null
     type = null
-
-    // createOrder = async () => {
-    //     try {
-    //         const result = await exchange.createOrder(this)
-    //     } catch(err) {
-    //         console.error(err)
-    //     }
-    // }
 }
 
 export default Order

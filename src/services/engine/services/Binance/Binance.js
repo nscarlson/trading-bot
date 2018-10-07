@@ -1,11 +1,13 @@
-import axios from "axios";
-import crypto from "crypto";
+import axios from 'axios';
+import crypto from 'crypto';
+import get from 'lodash/get'
 import moment, { duration } from "moment";
 import querystring from "querystring";
 import rateLimit from "function-rate-limit";
 import uuid from "uuid/v4";
 
-import Exchange from "../Exchange";
+import Exchange from '../Exchange';
+import Order from '../Order'
 
 class Binance extends Exchange {
   constructor() {
@@ -60,40 +62,58 @@ class Binance extends Exchange {
   //     }
   // }
 
-  createOrder = async ({
-    baseSymbol,
-    price,
-    quantity,
-    quoteSymbol,
-    side,
-    type
-  }) => {
+  createOrder = async (order) => {
     try {
-      const newClientOrderId = uuid();
+      const clientOrderId = uuid();
       const symbol = `${quoteSymbol}${baseSymbol}`;
       const timestamp = new Date().getTime();
 
-      // TODO: Make this more pleasant and readable
-      const totalParams = `newClientOrderId=${newClientOrderId}&symbol=${symbol}&side=${side}&type=${type}&timeInForce=FOK&quantity=${quantity}&price=${price}&timestamp=${timestamp}`;
+      const newOrder = new Order({
+        clientOrderId,
+        ...order,
+      })
+
+      return newOrder
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  submitOrder = async (order) => {    
+    try {
+      const {
+        baseSymbol,
+        clientOrderId,
+        price,
+        quantity,
+        quoteSymbol,
+        side,
+        type,
+      } = order
+  
+      console.info(
+        `${moment().format()} | submitting order | ${clientOrderId} ${type} ${side} ${quantity} ${quoteSymbol} @${price}`
+      )
+
+      const symbol = `${quoteSymbol}${baseSymbol}`;
+      const params = `newClientOrderId=${clientOrderId}&symbol=${symbol}&side=${side}&type=${type}&timeInForce=FOK&quantity=${quantity}&price=${price}&timestamp=${timestamp}`;
       const signature = this.hmacSha256(totalParams);
 
-      console.info(
-        `${moment().format()} | submitting order | ${newClientOrderId} ${type} ${side} ${quantity} ${quoteSymbol} @${price}`
-      );
-
       const result = (await this.v3HttpClient(
-        `/order/test?${totalParams}&signature=${signature}`,
+        `/order/test?${params}&signature=${signature}`,
         {
           headers: {
             "X-MBX-APIKEY": this.apiKey
           },
           method: "POST"
         }
-      )).data;
-    } catch (err) {
-      console.error(err);
+      )).data
+
+    } catch(err) {
+      console.error('Could not submit order:', order)
+      console.error(err)
     }
-  };
+  }
 
   createV1HttpClient = () => {
     console.info("Initializing Binance v1 client...");
@@ -111,7 +131,7 @@ class Binance extends Exchange {
     });
   };
 
-  getBalances = async keys => {
+  getBalances = async (keys) => {
     try {
       const timestamp = new Date().getTime();
       const totalParams = `timestamp=${timestamp}`;
