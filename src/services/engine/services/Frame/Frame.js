@@ -56,9 +56,7 @@ class Frame {
     if (!!this._asks) {
       return this._asks.sort((a, b) => {
         const bigNumberA = new BigNumber(a[0]);
-        console.log("A:", bigNumberA);
         const bigNumberB = new BigNumber(b[0]);
-        console.log("B:", bigNumberB);
         return bigNumberA.isGreaterThan(bigNumberB);
       });
     }
@@ -68,13 +66,13 @@ class Frame {
   get spread() {
     const ask = new BigNumber(this.asks[0][0]);
     const bid = new BigNumber(this.bids[0][0]);
+
     const percent = ask
       .minus(bid)
       .div(bid)
       .times("100");
+
     const spread = ask.minus(bid);
-    console.log("ask:", ask.toString());
-    console.log("bid:", bid.toString());
 
     return {
       ask: ask.toString(),
