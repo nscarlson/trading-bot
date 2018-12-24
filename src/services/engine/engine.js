@@ -1,4 +1,4 @@
-import config from './config'
+import config from "./config";
 
 import TriangularArbitrage from "./services/TriangularArbitrage";
 import Binance from "./services/Binance";
@@ -8,9 +8,8 @@ const triangularArbitrage = new TriangularArbitrage({
     frames: ["BTCUSDT", "ETHBTC", "ETHUSDT"]
   }
 });
-import sms from "../sms";
 
-const exchanges = config.exchanges
+const exchanges = config.exchanges;
 
 async function* theGenerator(stream) {
   // Get lock on stream
@@ -23,11 +22,11 @@ async function* theGenerator(stream) {
 
       // Exit if done
       if (done) {
-        return
+        return;
       }
 
       // Else, yield
-      yield value
+      yield value;
     }
   } finally {
     /**
@@ -42,35 +41,36 @@ async function* theGenerator(stream) {
   }
 }
 class Engine {
-    constructor() {
-      this.contexts = config.contexts
+  constructor() {
+    this.contexts = config.contexts;
 
-      for (exchange of exchanges) {
-        this.exchanges.push(new exchange())
-      }
+    for (exchange of exchanges) {
+      console.log("exchange:", exchange);
+      this.exchanges.push(new exchange());
     }
+  }
 
-    contexts = []
-    exchanges = []
+  contexts = [];
+  exchanges = [];
 }
-    // for (let i = 0; i < exchanges.length; i++) {
-    // await exchanges[i].getOrderBook({
-    //     baseSymbol: 'USDT',
-    //     quoteSymbol: 'BTC',
-    // })
-    // contexts.forEach((() => {
-    // }))
-    // await exchanges[i].getBalances(['BTC', 'USDT'])
-    // await exchanges[i].createOrder({
-    //     baseSymbol: 'USDT',
-    //     quantity: '55',
-    //     price: '4000',
-    //     quoteSymbol: 'BTC',
-    //     side: 'BUY',
-    //     type: 'LIMIT',
-    // })
-    // }
-    // };
+// for (let i = 0; i < exchanges.length; i++) {
+// await exchanges[i].getOrderBook({
+//     baseSymbol: 'USDT',
+//     quoteSymbol: 'BTC',
+// })
+// contexts.forEach((() => {
+// }))
+// await exchanges[i].getBalances(['BTC', 'USDT'])
+// await exchanges[i].createOrder({
+//     baseSymbol: 'USDT',
+//     quantity: '55',
+//     price: '4000',
+//     quoteSymbol: 'BTC',
+//     side: 'BUY',
+//     type: 'LIMIT',
+// })
+// }
+// };
 
 /**
  * Get all frames for each context, from each configured exchange
