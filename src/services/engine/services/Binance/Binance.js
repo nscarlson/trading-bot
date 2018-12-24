@@ -8,6 +8,7 @@ import rateLimit from "function-rate-limit";
 import uuid from "uuid/v4";
 
 import Exchange from "../Exchange";
+import Frame from "../Frame";
 import Order from "../Order";
 
 /**
@@ -102,6 +103,27 @@ class Binance extends Exchange {
       default:
         return new BigNumber(0);
     }
+  };
+
+  /**
+   * @param {string} market
+   * @return {Promise<Frame>}
+   */
+  getFrame = async market => {
+    const data = (await this.v1HttpClient.get(`/depth?symbol=${market}`)).data;
+
+    const asks = get(data, "asks", []);
+    const bids = get(data, "bids", []);
+    const timestamp = moment().format("x");
+
+    const frame = new Frame({
+      asks,
+      bids,
+      market,
+      timestamp
+    });
+
+    return frame;
   };
 
   /**
