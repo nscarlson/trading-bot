@@ -2,6 +2,6 @@ import "source-map-support/register";
 
 import Engine from "./Engine";
 
-const engine = new Engine();
+// const engine = new Engine();
 
-engine.init();
+// engine.init();
