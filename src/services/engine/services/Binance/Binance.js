@@ -2,7 +2,7 @@ import axios from "axios";
 import BigNumber from "bignumber.js";
 import crypto from "crypto";
 import get from "lodash/get";
-import moment, { duration } from "moment";
+import moment from "moment";
 import querystring from "querystring";
 import rateLimit from "function-rate-limit";
 import uuid from "uuid/v4";
@@ -80,6 +80,36 @@ class Binance extends Exchange {
   //     }
   // }
 
+    /**
+    * 
+    */
+    streamingFrames = async () => {
+        const response = [{
+            asks:[
+                ['0.12', '39'],
+                ['0.13', '12.45734879'],
+                ['0.14', '28.94'],
+            ],
+            bids: [
+                ['0.11', '5.292'],
+                ['0.10', '6'],
+                ['0.09', '7'],
+            ]
+        }]
+
+
+    }
+
+    // for await (const chunk of streamAsyncIterator(response.body)) {
+    //   console.log(`Read ${chunk.length} bytes`);
+    // }
+//   }
+
+//   async function* feedFrames(stream) {
+//       // Get a lock on the stream
+//       const reader = stream.getReader()
+      
+//   }
   /**
    * @async
    * @param {Object} executionSequence Execution Sequence object
@@ -155,7 +185,6 @@ class Binance extends Exchange {
   };
 
   /**
-   * @async
    * @param {string} assetSymbol  Asset name
    * @return {Promise<BigNumber>} Estimated withdrawal fee
    */
@@ -259,13 +288,15 @@ class Binance extends Exchange {
   };
 
   createV1HttpClient = () => {
+    console.log('initializing binance v1 http client')
     this.v1HttpClient = axios.create({
-      baseURL: "https://api.binance.com/api/v1",
-      timeout: 5000
+        baseURL: "https://api.binance.com/api/v1",
+        timeout: 5000
     });
   };
 
   createV3HttpClient = () => {
+    console.log('initializing binance v3 http client')
     this.v3HttpClient = axios.create({
       baseURL: "https://api.binance.com/api/v3",
       timeout: 5000
@@ -273,6 +304,7 @@ class Binance extends Exchange {
   };
 
   createWithdrawalApiClient = () => {
+    console.log('initializing binance withdrawal api http client')
     this.v3HttpClient = axios.create({
       baseURL: "https://api.binance.com/wapi",
       timeout: 5000

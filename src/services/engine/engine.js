@@ -1,58 +1,74 @@
-import config from "./config";
+import { w3cwebsocket as WebSocket } from 'websocket'
 
 import TriangularArbitrage from "./services/TriangularArbitrage";
 import Binance from "./services/Binance";
 
-const triangularArbitrage = new TriangularArbitrage({
-  state: {
-    frames: ["BTCUSDT", "ETHBTC", "ETHUSDT"]
-  }
-});
+const exchanges = [new Binance()]
+const markets = ['btcusdt', 'ethbtc', 'ethusdt']
 
-const exchanges = config.exchanges;
+const feeds = {}
 
-async function* theGenerator(stream) {
-  // Get lock on stream
-  const reader = stream.getReader();
-
-  try {
-    while (true) {
-      // Read from stream
-      const { done, value } = await reader.read();
-
-      // Exit if done
-      if (done) {
-        return;
-      }
-
-      // Else, yield
-      yield value;
+for (const market of markets) {
+    console.log('market:', market)
+    feeds[market] = new WebSocket(`wss://stream.binance.com:9443/ws/${market}@depth`)
+    feeds[market].onmessage = (e) => {
+        console.log(market, 'orderbook update')
+        console.log(e.data);
     }
-  } finally {
-    /**
-     * The finally clause is important.
-     * If we break of the loop it'll cause the async generator
-     * to return after the current (or next) yield point. If
-     * this happens, we still want to release the lock on the
-     * reader, and a finally is the only thing that can execute
-     * after a return.
-     */
-    reader.releaseLock();
-  }
 }
-class Engine {
-  constructor() {
-    this.contexts = config.contexts;
+// const triangularArbitrage = new TriangularArbitrage({
+//   state: {
+//     frames: ["BTCUSDT", "ETHBTC", "ETHUSDT"]
+//   }
+// });
 
-    for (exchange of exchanges) {
-      console.log("exchange:", exchange);
-      this.exchanges.push(new exchange());
-    }
-  }
+// const exchanges = config.exchanges;
 
-  contexts = [];
-  exchanges = [];
-}
+// async function* theGenerator(stream) {
+//   // Get lock on stream
+//   const reader = stream.getReader();
+
+//   try {
+//     while (true) {
+//       // Read from stream
+//       const { done, value } = await reader.read();
+
+//       // Exit if done
+//       if (done) {
+//         return;
+//       }
+
+//       // Else, yield
+//       yield value;
+//     }
+//   } finally {
+//     /**
+//      * The finally clause is important.
+//      * If we break of the loop it'll cause the async generator
+//      * to return after the current (or next) yield point. If
+//      * this happens, we still want to release the lock on the
+//      * reader, and a finally is the only thing that can execute
+//      * after a return.
+//      */
+//     reader.releaseLock();
+//   } catch (err) {
+//       console.error(err)
+//   }
+// }
+
+// class Engine {
+//   constructor() {
+//     this.contexts = config.contexts;
+
+//     for (exchange of exchanges) {
+//       console.log("exchange:", exchange);
+//       this.exchanges.push(new exchange());
+//     }
+//   }
+
+//   contexts = [];
+//   exchanges = [];
+// }
 // for (let i = 0; i < exchanges.length; i++) {
 // await exchanges[i].getOrderBook({
 //     baseSymbol: 'USDT',
@@ -104,5 +120,3 @@ class Engine {
 
 //     return frames
 // }
-
-export default Engine;
