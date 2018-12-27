@@ -1,12 +1,5 @@
 class Order {
-    constructor({
-        exchange,
-        price,
-        quantity,
-        side,
-        timeInForce,
-        type
-    }) {
+    constructor({ exchange, price, quantity, side, timeInForce, type }) {
         super()
 
         this.price = price

@@ -8,14 +8,17 @@ import uuid from 'uuid/v4'
 import Exchange from '../Exchange'
 
 class Binance extends Exchange {
-    constructor () {
+    constructor() {
         super({
-            exchangeName: 'bittrex'
+            exchangeName: 'bittrex',
         })
 
         this.createV1_1HttpClient()
 
-        this.requestLimit = moment(1200, this.mapDurationName('minutes')).valueOf()
+        this.requestLimit = moment(
+            1200,
+            this.mapDurationName('minutes'),
+        ).valueOf()
         this.orderLimit = moment(10, this.mapDurationName('seconds')).valueOf()
     }
 
@@ -76,14 +79,19 @@ class Binance extends Exchange {
             const totalParams = `newClientOrderId=${newClientOrderId}&symbol=${symbol}&side=${side}&type=${type}&timeInForce=FOK&quantity=${quantity}&price=${price}&timestamp=${timestamp}`
             const signature = this.hmacSha256(totalParams)
 
-            console.info(`${moment().format()} | submitting order | ${newClientOrderId} ${type} ${side} ${quantity} ${quoteSymbol} @${price}`)
+            console.info(
+                `${moment().format()} | submitting order | ${newClientOrderId} ${type} ${side} ${quantity} ${quoteSymbol} @${price}`,
+            )
 
-            const result = (await this.v3HttpClient(`/order/test?${totalParams}&signature=${signature}`, {
-                headers: {
-                    'X-MBX-APIKEY': this.apiKey,
+            const result = (await this.v3HttpClient(
+                `/order/test?${totalParams}&signature=${signature}`,
+                {
+                    headers: {
+                        'X-MBX-APIKEY': this.apiKey,
+                    },
+                    method: 'POST',
                 },
-                method: 'POST',
-            })).data
+            )).data
         } catch (err) {
             console.error(err)
         }
@@ -101,20 +109,25 @@ class Binance extends Exchange {
         try {
             const timestamp = new Date().getTime()
             const totalParams = `timestamp=${timestamp}`
-    
-            const balances = (await this.v3HttpClient.get(`/account?${totalParams}`, {
-                headers: {
-                    'X-MBX-APIKEY': this.apiKey,
-                },
-                params: {
-                    signature: this.hmacSha256(totalParams),
-                },
-            })).data.balances
 
-            const filteredBalances = balances.filter((balance) => keys.includes(balance.asset))
-    
+            const balances = (await this.v3HttpClient.get(
+                `/account?${totalParams}`,
+                {
+                    headers: {
+                        'X-MBX-APIKEY': this.apiKey,
+                    },
+                    params: {
+                        signature: this.hmacSha256(totalParams),
+                    },
+                },
+            )).data.balances
+
+            const filteredBalances = balances.filter((balance) =>
+                keys.includes(balance.asset),
+            )
+
             return filteredBalances
-        } catch(err) {
+        } catch (err) {
             console.error(err)
         }
     }
@@ -123,46 +136,50 @@ class Binance extends Exchange {
         try {
             const info = (await this.v1HttpClient.get('/exchangeInfo')).data
             console.log('rateLimits', info.rateLimits)
-        } catch(err) {
+        } catch (err) {
             console.error(err)
         }
     }
 
-    getOrderBook = async ({
-        baseSymbol,
-        quoteSymbol,
-    }) => {
+    getOrderBook = async ({ baseSymbol, quoteSymbol }) => {
         try {
-            const result = (await this.v1HttpClient.get('/public/getorderbook', {
-                params: {
-                    limit,
-                    market: `${baseSymbol}-${quoteSymbol}`,
-                    type: 'both',
-                }
-            })).data
+            const result = (await this.v1HttpClient.get(
+                '/public/getorderbook',
+                {
+                    params: {
+                        limit,
+                        market: `${baseSymbol}-${quoteSymbol}`,
+                        type: 'both',
+                    },
+                },
+            )).data
 
-            console.log(`${moment().format()} | ${this.exchangeName} | orderbook info   | Bid: ${result.bids[0][0]} Ask: ${result.asks[0][0]}`)
-        } catch(err) {
+            console.log(
+                `${moment().format()} | ${
+                    this.exchangeName
+                } | orderbook info   | Bid: ${result.bids[0][0]} Ask: ${
+                    result.asks[0][0]
+                }`,
+            )
+        } catch (err) {
             console.error(err)
         }
     }
 
     /**
      * TODO: Move this to utils if hmac functionality is needed in multiple places
-     * @returns 
+     * @returns
      */
-    hmacSha256 = (message) => crypto.createHmac('sha256', this.apiSecretKey)
+    hmacSha256 = (message) =>
+        crypto
+            .createHmac('sha256', this.apiSecretKey)
             .update(message)
             .digest()
             .toString('hex')
 
-    rateLimitOrders = () => {
+    rateLimitOrders = () => {}
 
-    }
-
-    rateLimitRequests = () => {
-
-    }
+    rateLimitRequests = () => {}
 }
 
 export default Binance

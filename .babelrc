@@ -1,9 +1,9 @@
 {
-  "compact": false,
-  "plugins": [
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-proposal-export-default-from",
-    "dynamic-import-node"
-  ],
-  "presets": ["@babel/preset-env"]
+    "compact": false,
+    "plugins": [
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-proposal-export-default-from",
+        "dynamic-import-node"
+    ],
+    "presets": ["@babel/preset-env"]
 }
