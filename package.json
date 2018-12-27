@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
+        "dev": "yarn docker:dev",
+        "docker:dev": "docker-compose up -d",
+        "docker:down": "docker-compose down",
         "start": "pm2 start process.config.js && pm2 logs"
     },
     "workspaces": [
