@@ -1,0 +1,5 @@
+{
+    "compact": "false",
+    "plugins": ["dynamic-import-node"],
+    "presets": ["env", "react", "stage-0"]
+}

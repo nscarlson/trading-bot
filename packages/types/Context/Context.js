@@ -2,4 +2,4 @@ class Context {
     tradingPairs = []
 }
 
-export default from Context
+export default Context
