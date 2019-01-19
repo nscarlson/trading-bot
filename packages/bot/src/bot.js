@@ -1,30 +1,30 @@
 import 'source-map-support/register'
 
-import TriangularArbitrage from './services/TriangularArbitrage'
-import Binance from './services/Binance'
+import { TriangularArbitrage } from '@tb/contexts'
+import * as exchanges from '@tb/exchanges'
 
-import sms from '../sms'
+import sms from '@tb/sms'
 
-const binance = new Binance()
+const binance = new exchanges.Binance()
 const triangularArbitrage = new TriangularArbitrage()
 
 const contexts = [triangularArbitrage]
-const exchanges = [binance]
+const exchangeList = [binance]
 
 sms.sendSms({
     body: `${new Date()} The engine is starting`,
 })
 
 const engine = async () => {
-    for (let i = 0; i < exchanges.length; i++) {
-        await exchanges[i].getOrderBook({
+    for (let i = 0; i < exchangeList.length; i++) {
+        await exchangeList[i].getOrderBook({
             baseSymbol: 'USDT',
             quoteSymbol: 'BTC',
         })
 
-        await exchanges[i].getBalances(['BTC', 'USDT'])
+        await exchangeList[i].getBalances(['BTC', 'USDT'])
 
-        await exchanges[i].createOrder({
+        await exchangeList[i].createOrder({
             baseSymbol: 'USDT',
             quantity: '55',
             price: '4000',

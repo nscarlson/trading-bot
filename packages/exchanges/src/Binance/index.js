@@ -1,1 +1,1 @@
-export { default } from './Binance'
+export { Binance } from './Binance'

@@ -5,7 +5,7 @@ import querystring from 'querystring'
 import rateLimit from 'function-rate-limit'
 import uuid from 'uuid/v4'
 
-import Exchange from '../Exchange'
+import { Exchange } from '@tb/types'
 
 class Binance extends Exchange {
     constructor() {

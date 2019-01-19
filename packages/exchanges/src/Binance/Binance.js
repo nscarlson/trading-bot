@@ -4,11 +4,15 @@ import moment from 'moment'
 import querystring from 'querystring'
 import uuid from 'uuid/v4'
 
-import Exchange from '../Exchange'
+import * as types from '@tb/types'
 
-class Binance extends Exchange {
+console.log('exchange:', types.Exchange)
+
+export class Binance extends types.Exchange {
     constructor() {
-        super()
+        super({
+            name: 'binance',
+        })
         this.createV1HttpClient()
         this.createV3HttpClient()
     }
@@ -153,5 +157,3 @@ class Binance extends Exchange {
             .digest()
             .toString('hex')
 }
-
-export default Binance

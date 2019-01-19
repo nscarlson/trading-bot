@@ -1,6 +1,4 @@
-class Exchange {
+export class Exchange {
     getOrderBook = () => {}
     createOrder = () => {}
 }
-
-export default Exchange

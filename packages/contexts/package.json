@@ -2,14 +2,16 @@
     "name": "@tb/contexts",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
-    "scripts": {},
+    "main": "./dist/index.js",
+    "scripts": {
+        "build": "babel src --out-dir dist"
+    },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
         "@babel/core": "^7.1.2",
-        "@babel/plugin-proposal-class-properties": "^7.1.0",
+        "@babel/plugin-proposal-class-properties": "^7.2.3",
         "@babel/plugin-proposal-export-default-from": "^7.0.0",
         "@babel/polyfill": "^7.0.0",
         "@babel/preset-env": "^7.1.0",
