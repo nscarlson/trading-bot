@@ -17,7 +17,7 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-stage-0": "^7.0.0",
-    "@babel/register": "^7.0.0",
+    "@babel/register": "^7.4.4",
     "axios": "^0.18.0",
     "babel-plugin-dynamic-import-node": "^1.2.0",
     "babel-preset-env": "^1.7.0",
