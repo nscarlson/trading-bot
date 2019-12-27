@@ -1,5 +1,14 @@
 {
-    "eslint.autoFixOnSave": false,
-    "prettier.eslintIntegration": true,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "eslint.validate": ["javascript", "typescript"],
+    "eslint.codeAction.disableRuleComment": {
+        "enable": true,
+        "location": "sameLine"
+    },
+    "javascript.validate.enable": true,
+    "typescript.validate.enable": true,
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    }
 }
