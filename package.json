@@ -24,7 +24,7 @@
     "moment": "2.24.0",
     "querystring": "0.2.0",
     "source-map-support": "0.5.16",
-    "twilio": "3.21.0",
+    "twilio": "3.39.1",
     "uuid": "3.3.3"
   }
 }
