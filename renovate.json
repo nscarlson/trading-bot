@@ -12,7 +12,6 @@
     ":autodetectPinVersions",
     ":prHourlyLimitNone",
     ":prConcurrentLimit20",
-    "group:monorepos",
     "group:recommended"
   ]
 }
