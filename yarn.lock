@@ -1926,9 +1926,9 @@ to-fast-properties@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-2.0.0.tgz#dc5e698cbd079265bc73e0377681a4e4e83f616e"
 
-twilio@3.41.1:
-  version "3.41.1"
-  resolved "https://registry.yarnpkg.com/twilio/-/twilio-3.41.1.tgz#653f2daccad7fe3ac0362acd1a1347e690dd9795"
+twilio@3.42.0:
+  version "3.42.0"
+  resolved "https://registry.yarnpkg.com/twilio/-/twilio-3.42.0.tgz#8f48fe10c164c55511f09ae31c0a82f14a958647"
   dependencies:
     "@types/express" "^4.17.3"
     axios "^0.19.2"
