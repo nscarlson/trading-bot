@@ -907,11 +907,6 @@ asap@^2.0.0:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
 
-asciichart@^1.5.15:
-  version "1.5.15"
-  resolved "https://registry.yarnpkg.com/asciichart/-/asciichart-1.5.15.tgz#dbc7d4bf31437149e3c0cd4dca03bfc9c7d377eb"
-  integrity sha512-0XHe9H/NB1A717Ji8IhNK7NIvdqxQfEVfTVqFqkQAK06N3qqnIldsU1o4O8KuYhHoCADOiC/Xeg6ZmbJyFtrTA==
-
 axios@0.19.2, axios@^0.19.2:
   version "0.19.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.19.2.tgz#3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27"
@@ -1325,11 +1320,6 @@ babel-types@^6.19.0, babel-types@^6.24.1, babel-types@^6.26.0:
 babylon@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
-
-blessed@^0.1.81:
-  version "0.1.81"
-  resolved "https://registry.yarnpkg.com/blessed/-/blessed-0.1.81.tgz#f962d687ec2c369570ae71af843256e6d0ca1129"
-  integrity sha1-+WLWh+wsNpVwrnGvhDJW5tDKESk=
 
 browserslist@^3.2.6:
   version "3.2.8"
