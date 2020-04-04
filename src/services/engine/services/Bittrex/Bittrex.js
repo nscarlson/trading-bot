@@ -3,8 +3,7 @@ import crypto from 'crypto'
 import moment, { duration } from 'moment'
 import querystring from 'querystring'
 import rateLimit from 'function-rate-limit'
-import uuid from 'uuid/v4'
-
+import { v4 as uuidv4 } from 'uuid'
 import Exchange from '../Exchange'
 
 class Binance extends Exchange {
@@ -71,7 +70,7 @@ class Binance extends Exchange {
         type,
     }) => {
         try {
-            const newClientOrderId = uuid()
+            const newClientOrderId = uuidv4()
             const symbol = `${quoteSymbol}${baseSymbol}`
             const timestamp = new Date().getTime()
 
@@ -83,15 +82,17 @@ class Binance extends Exchange {
                 `${moment().format()} | submitting order | ${newClientOrderId} ${type} ${side} ${quantity} ${quoteSymbol} @${price}`,
             )
 
-            const result = (await this.v3HttpClient(
-                `/order/test?${totalParams}&signature=${signature}`,
-                {
-                    headers: {
-                        'X-MBX-APIKEY': this.apiKey,
+            const result = (
+                await this.v3HttpClient(
+                    `/order/test?${totalParams}&signature=${signature}`,
+                    {
+                        headers: {
+                            'X-MBX-APIKEY': this.apiKey,
+                        },
+                        method: 'POST',
                     },
-                    method: 'POST',
-                },
-            )).data
+                )
+            ).data
         } catch (err) {
             console.error(err)
         }
@@ -110,17 +111,16 @@ class Binance extends Exchange {
             const timestamp = new Date().getTime()
             const totalParams = `timestamp=${timestamp}`
 
-            const balances = (await this.v3HttpClient.get(
-                `/account?${totalParams}`,
-                {
+            const balances = (
+                await this.v3HttpClient.get(`/account?${totalParams}`, {
                     headers: {
                         'X-MBX-APIKEY': this.apiKey,
                     },
                     params: {
                         signature: this.hmacSha256(totalParams),
                     },
-                },
-            )).data.balances
+                })
+            ).data.balances
 
             const filteredBalances = balances.filter((balance) =>
                 keys.includes(balance.asset),
@@ -143,16 +143,15 @@ class Binance extends Exchange {
 
     getOrderBook = async ({ baseSymbol, quoteSymbol }) => {
         try {
-            const result = (await this.v1HttpClient.get(
-                '/public/getorderbook',
-                {
+            const result = (
+                await this.v1HttpClient.get('/public/getorderbook', {
                     params: {
                         limit,
                         market: `${baseSymbol}-${quoteSymbol}`,
                         type: 'both',
                     },
-                },
-            )).data
+                })
+            ).data
 
             console.log(
                 `${moment().format()} | ${

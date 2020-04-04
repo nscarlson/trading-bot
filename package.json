@@ -1,0 +1,30 @@
+{
+  "name": "arbitrage-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "react-scripts build",
+    "electron": "electron .",
+    "start": "pm2 start process.config.js && pm2 logs"
+  },
+  "author": "Nathan Carlson",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "7.9.0",
+    "@babel/plugin-proposal-class-properties": "7.8.3",
+    "@babel/plugin-proposal-export-default-from": "7.8.3",
+    "@babel/polyfill": "7.8.7",
+    "@babel/preset-env": "7.9.0",
+    "@babel/preset-stage-0": "7.8.3",
+    "@babel/register": "7.9.0",
+    "axios": "0.19.2",
+    "babel-plugin-dynamic-import-node": "2.3.0",
+    "babel-preset-env": "1.7.0",
+    "moment": "2.24.0",
+    "querystring": "0.2.0",
+    "source-map-support": "0.5.16",
+    "twilio": "3.41.1",
+    "uuid": "7.0.2"
+  }
+}

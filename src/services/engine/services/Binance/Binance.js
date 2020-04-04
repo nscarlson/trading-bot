@@ -1,8 +1,7 @@
 import axios from 'axios'
 import crypto from 'crypto'
 import moment from 'moment'
-import uuid from 'uuid/v4'
-
+import { v4 as uuidv4 } from 'uuid'
 import Exchange from '../Exchange'
 
 class Binance extends Exchange {
@@ -54,7 +53,7 @@ class Binance extends Exchange {
         type,
     }) => {
         try {
-            const newClientOrderId = uuid()
+            const newClientOrderId = uuidv4()
             const symbol = `${quoteSymbol}${baseSymbol}`
             const timestamp = new Date().getTime()
 
@@ -101,6 +100,12 @@ class Binance extends Exchange {
         })
     }
 
+    parseBalanceBySymbol = ({ balances, symbol }) => {
+        const balance = balances.find((b) => b.asset === symbol)
+        // console.log('balance:', balance)
+        return balance
+    }
+
     getBalances = async (keys) => {
         try {
             const timestamp = new Date().getTime()
@@ -119,6 +124,15 @@ class Binance extends Exchange {
 
             const filteredBalances = balances.filter((balance) =>
                 keys.includes(balance.asset),
+            )
+
+            console.info(
+                `                          | wallet balance   | BTC: ${
+                    this.parseBalanceBySymbol({
+                        balances: filteredBalances,
+                        symbol: 'BTC',
+                    }).free
+                }`,
             )
 
             return filteredBalances

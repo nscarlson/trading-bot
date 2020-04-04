@@ -1,5 +1,6 @@
 import 'source-map-support/register'
 
+import AlertContext from './services/AlertContext'
 import TriangularArbitrage from './services/TriangularArbitrage'
 import Binance from './services/Binance'
 
@@ -7,6 +8,7 @@ import sms from '../sms'
 
 const binance = new Binance()
 const triangularArbitrage = new TriangularArbitrage()
+const alertContext = new AlertContext()
 
 const contexts = [triangularArbitrage]
 const exchanges = [binance]
