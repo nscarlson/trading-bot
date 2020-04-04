@@ -1,7 +1,6 @@
 import axios from 'axios'
 import crypto from 'crypto'
 import moment from 'moment'
-import querystring from 'querystring'
 import uuid from 'uuid/v4'
 
 import Exchange from '../Exchange'
@@ -68,15 +67,17 @@ class Binance extends Exchange {
                 `${moment().format()} | submitting order | ${newClientOrderId} ${type} ${side} ${quantity} ${quoteSymbol} @${price}`,
             )
 
-            const result = (await this.v3HttpClient(
-                `/order/test?${totalParams}&signature=${signature}`,
-                {
-                    headers: {
-                        'X-MBX-APIKEY': this.apiKey,
+            const result = (
+                await this.v3HttpClient(
+                    `/order/test?${totalParams}&signature=${signature}`,
+                    {
+                        headers: {
+                            'X-MBX-APIKEY': this.apiKey,
+                        },
+                        method: 'POST',
                     },
-                    method: 'POST',
-                },
-            )).data
+                )
+            ).data
         } catch (err) {
             console.error(err)
         }
@@ -105,17 +106,16 @@ class Binance extends Exchange {
             const timestamp = new Date().getTime()
             const totalParams = `timestamp=${timestamp}`
 
-            const balances = (await this.v3HttpClient.get(
-                `/account?${totalParams}`,
-                {
+            const balances = (
+                await this.v3HttpClient.get(`/account?${totalParams}`, {
                     headers: {
                         'X-MBX-APIKEY': this.apiKey,
                     },
                     params: {
                         signature: this.hmacSha256(totalParams),
                     },
-                },
-            )).data.balances
+                })
+            ).data.balances
 
             const filteredBalances = balances.filter((balance) =>
                 keys.includes(balance.asset),
@@ -129,12 +129,14 @@ class Binance extends Exchange {
 
     getOrderBook = async ({ baseSymbol, limit = 1000, quoteSymbol }) => {
         try {
-            const result = (await this.v1HttpClient.get('/depth', {
-                params: {
-                    symbol: `${quoteSymbol}${baseSymbol}`,
-                    limit,
-                },
-            })).data
+            const result = (
+                await this.v1HttpClient.get('/depth', {
+                    params: {
+                        symbol: `${quoteSymbol}${baseSymbol}`,
+                        limit,
+                    },
+                })
+            ).data
 
             console.log(
                 `${moment().format()} | orderbook info   | Bid: ${
