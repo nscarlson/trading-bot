@@ -1,4 +1,5 @@
 import Context from '../services/engine/services/Context'
+import moment from 'moment'
 
 const blessed = require('blessed')
 
@@ -11,7 +12,7 @@ export default class BlessedScreen extends Context {
 
         this.bidsTable = blessed.listtable({
             left: 0,
-            width: '50%',
+            width: '33%',
             style: {
                 header: {
                     bg: 'green',
@@ -22,8 +23,8 @@ export default class BlessedScreen extends Context {
         })
 
         this.asksTable = blessed.listtable({
-            left: '50%-2',
-            width: '50%',
+            left: '33%-2',
+            width: '33%',
             style: {
                 header: {
                     bg: 'red',
@@ -32,13 +33,32 @@ export default class BlessedScreen extends Context {
             },
         })
 
+        this.logWindow = blessed.box({
+            left: '66%-2',
+            width: '33%',
+
+            keys: true,
+            mouse: true,
+            input: true,
+            scrollable: true,
+            alwaysScroll: true,
+            scrollbar: {
+                bg: 'blue',
+            },
+            vi: true,
+        })
+
         this.screen.append(this.bidsTable)
         this.screen.append(this.asksTable)
-    }
+        this.screen.append(this.logWindow)
 
+        this.screen.render()
+    }
+    asksTable = null
+    asksData = null
     bidsTable = null
     bidsData = null
-    asksData = null
+    orderBook = null
     screen = null
 
     processFrame = (frame) => {
@@ -50,6 +70,10 @@ export default class BlessedScreen extends Context {
 
         this.bidsTable.setData([['quantity', 'price'], ...this.bidsData])
         this.asksTable.setData([['price', 'quantity'], ...this.asksData])
+
+        // Log something
+        this.logWindow.pushLine(`[${moment().toISOString()}] something`)
+        this.logWindow.setScrollPerc(100)
 
         this.screen.render()
     }

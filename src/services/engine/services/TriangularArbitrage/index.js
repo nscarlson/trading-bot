@@ -1,1 +1,1 @@
-export default from './TriangularArbitrage'
+export { default } from './TriangularArbitrage'

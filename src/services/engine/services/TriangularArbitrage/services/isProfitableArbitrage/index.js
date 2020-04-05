@@ -1,1 +1,1 @@
-export default from './isProfitableArbitrage'
+export { default } from './isProfitableArbitrage'

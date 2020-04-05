@@ -45,3 +45,9 @@ main.js.map
 npm-debug.log.*
 
 .env
+
+# Build outputs
+tsconfig.tsbuildinfo
+build/
+dist/
+.volumes/

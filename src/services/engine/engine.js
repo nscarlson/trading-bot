@@ -1,43 +1,60 @@
-import 'source-map-support/register'
+import WebSocket from 'ws'
 
-import AlertContext from './services/AlertContext'
-import BlessedScreenContext from '../../contexts/BlessedScreenContext'
+// import AlertContext from './services/AlertContext'
+// import BlessedScreenContext from '../../contexts/BlessedScreenContext'
 // import TriangularArbitrage from './services/TriangularArbitrage'
-import Binance from './services/Binance'
+// import Binance from './services/Binance'
 
 // import sms from '../sms'
 
-const binance = new Binance()
+// const binance = new Binance()
 // const triangularArbitrage = new TriangularArbitrage()
-const alertContext = new AlertContext()
-const blessedScreenContext = new BlessedScreenContext()
+// const alertContext = new AlertContext()
+// const blessedScreenContext = new BlessedScreenContext()
 
-const contexts = [alertContext, blessedScreenContext]
-const exchanges = [binance]
+// const contexts = [alertContext]
+// const exchanges = [binance]
 
-const engine = async () => {
-    for (const exchange of exchanges) {
-        const orderBook = await exchange.getOrderBook({
-            baseSymbol: 'USDT',
-            quoteSymbol: 'BTC',
-        })
+// const engine = async () => {
+//     for (const exchange of exchanges) {
+//         const orderBook = await exchange.getOrderBook({
+//             baseSymbol: 'USDT',
+//             quoteSymbol: 'BTC',
+//         })
 
-        const balances = await exchange.getBalances(['BTC', 'USDT'])
+//         const balances = await exchange.getBalances(['BTC', 'USDT'])
 
-        const frame = {
-            balances,
-            orderBook,
-        }
+//         const frame = {
+//             balances,
+//             orderBook,
+//         }
 
-        // every context gets the frame
-        for (const context of contexts) {
-            context.processFrame(frame)
-        }
-    }
-}
+//         // every context gets the frame
+//         // for (const context of contexts) {
+//         //     context.processFrame(frame)
+//         // }
+//     }
+// }
 
 const init = async () => {
-    setInterval(engine, 1000)
+    // TODO: manage websockets dynamically elsewhere
+    const ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusd@depth')
+
+    ws.on('open', () =>
+        ws.send(
+            JSON.stringify({
+                method: 'SUBSCRIBE',
+                params: ['btcusdt@depth'],
+                id: 312,
+            }),
+        ),
+    )
+    ws.on('message', (data) =>
+        console.log(JSON.stringify(JSON.parse(data), null, 4)),
+    )
+    ws.on('error', (err) => console.log(err))
+
+    // setInterval(engine, 1000)
 }
 
 export default init()
