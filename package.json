@@ -20,6 +20,8 @@
         "axios": "0.19.2",
         "babel-plugin-dynamic-import-node": "2.3.0",
         "babel-preset-env": "1.7.0",
+        "blessed": "^0.1.81",
+        "blessed-contrib": "^4.8.19",
         "dotenv": "^8.2.0",
         "moment": "2.24.0",
         "querystring": "0.2.0",

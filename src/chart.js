@@ -16,34 +16,9 @@
  * - If you write code that manipulates the screen, remember to run screen.render() to render your changes.
  */
 const moment = require('moment')
-const blessed = require('blessed')
-
-var screen = blessed.screen()
-const leftScreen = blessed.box({
-    top: 0,
-    left: 0,
-    height: '100%',
-    width: '50%',
-    keys: false,
-    mouse: false,
-    alwaysScroll: true,
-    scrollable: true,
-})
-
-const rightScreen = blessed.textbox({
-    top: 0,
-    right: 0,
-    height: '100%',
-    width: '50%',
-    keys: false,
-    mouse: false,
-    alwaysScroll: true,
-    scrollable: true,
-})
 
 // Add body to blessed screen
 screen.append(leftScreen)
-screen.append(rightScreen)
 
 // Close the example on Escape, Q, or Ctrl+C
 screen.key(['C-c'], (ch, key) => process.exit(0))

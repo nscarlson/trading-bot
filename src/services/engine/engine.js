@@ -1,16 +1,16 @@
 import 'source-map-support/register'
 
 import AlertContext from './services/AlertContext'
-import TriangularArbitrage from './services/TriangularArbitrage'
+// import TriangularArbitrage from './services/TriangularArbitrage'
 import Binance from './services/Binance'
 
 import sms from '../sms'
 
 const binance = new Binance()
-const triangularArbitrage = new TriangularArbitrage()
+// const triangularArbitrage = new TriangularArbitrage()
 const alertContext = new AlertContext()
 
-const contexts = [triangularArbitrage]
+const contexts = [alertContext]
 const exchanges = [binance]
 
 sms.sendSms({
@@ -18,22 +18,23 @@ sms.sendSms({
 })
 
 const engine = async () => {
-    for (let i = 0; i < exchanges.length; i++) {
-        await exchanges[i].getOrderBook({
+    for (const exchange of exchanges) {
+        const orderBook = await exchange.getOrderBook({
             baseSymbol: 'USDT',
             quoteSymbol: 'BTC',
         })
 
-        await exchanges[i].getBalances(['BTC', 'USDT'])
+        const balances = await exchange.getBalances(['BTC', 'USDT'])
 
-        await exchanges[i].createOrder({
-            baseSymbol: 'USDT',
-            quantity: '55',
-            price: '4000',
-            quoteSymbol: 'BTC',
-            side: 'BUY',
-            type: 'LIMIT',
-        })
+        const frame = {
+            balances,
+            orderBook,
+        }
+
+        // every context gets the frame
+        for (const context of contexts) {
+            context.processFrame(frame)
+        }
     }
 }
 

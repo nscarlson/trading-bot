@@ -152,11 +152,15 @@ class Binance extends Exchange {
                 })
             ).data
 
+            console.log(JSON.stringify(result, null, 4))
+
             console.log(
                 `${moment().format()} | orderbook info   | Bid: ${
                     result.bids[0][0]
                 } Ask: ${result.asks[0][0]}`,
             )
+
+            return result
         } catch (err) {
             console.error(err)
         }
