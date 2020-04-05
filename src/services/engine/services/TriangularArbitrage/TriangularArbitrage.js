@@ -12,7 +12,7 @@ class TriangularArbitrage extends Context {
     config = {}
 
     processFrame(frame) {
-        console.log('frame:', frame)
+        //  console.log('frame:', frame)
     }
 }
 

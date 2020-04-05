@@ -126,14 +126,14 @@ class Binance extends Exchange {
                 keys.includes(balance.asset),
             )
 
-            console.info(
-                `                          | wallet balance   | BTC: ${
-                    this.parseBalanceBySymbol({
-                        balances: filteredBalances,
-                        symbol: 'BTC',
-                    }).free
-                }`,
-            )
+            // console.info(
+            //     `                          | wallet balance   | BTC: ${
+            //         this.parseBalanceBySymbol({
+            //             balances: filteredBalances,
+            //             symbol: 'BTC',
+            //         }).free
+            //     }`,
+            // )
 
             return filteredBalances
         } catch (err) {
@@ -152,13 +152,13 @@ class Binance extends Exchange {
                 })
             ).data
 
-            console.log(JSON.stringify(result, null, 4))
+            // console.log(JSON.stringify(result, null, 4))
 
-            console.log(
-                `${moment().format()} | orderbook info   | Bid: ${
-                    result.bids[0][0]
-                } Ask: ${result.asks[0][0]}`,
-            )
+            // console.log(
+            //     `${moment().format()} | orderbook info   | Bid: ${
+            //         result.bids[0][0]
+            //     } Ask: ${result.asks[0][0]}`,
+            // )
 
             return result
         } catch (err) {

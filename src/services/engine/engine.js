@@ -1,21 +1,19 @@
 import 'source-map-support/register'
 
 import AlertContext from './services/AlertContext'
+import BlessedScreenContext from '../../contexts/BlessedScreenContext'
 // import TriangularArbitrage from './services/TriangularArbitrage'
 import Binance from './services/Binance'
 
-import sms from '../sms'
+// import sms from '../sms'
 
 const binance = new Binance()
 // const triangularArbitrage = new TriangularArbitrage()
 const alertContext = new AlertContext()
+const blessedScreenContext = new BlessedScreenContext()
 
-const contexts = [alertContext]
+const contexts = [alertContext, blessedScreenContext]
 const exchanges = [binance]
-
-sms.sendSms({
-    body: `${new Date()} The engine is starting`,
-})
 
 const engine = async () => {
     for (const exchange of exchanges) {
