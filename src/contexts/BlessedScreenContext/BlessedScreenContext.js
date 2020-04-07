@@ -1,4 +1,4 @@
-import Context from '../services/engine/services/Context'
+import Context from '../../services/engine/services/Context'
 import moment from 'moment'
 
 const blessed = require('blessed')
