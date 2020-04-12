@@ -12,7 +12,7 @@ export default class BlessedScreen extends Context {
 
         this.bidsTable = blessed.listtable({
             left: 0,
-            width: '33%',
+            width: '50%',
             style: {
                 header: {
                     bg: 'green',
@@ -23,8 +23,8 @@ export default class BlessedScreen extends Context {
         })
 
         this.asksTable = blessed.listtable({
-            left: '33%-2',
-            width: '33%',
+            left: '50%-2',
+            width: '50%',
             style: {
                 header: {
                     bg: 'red',
@@ -33,24 +33,8 @@ export default class BlessedScreen extends Context {
             },
         })
 
-        this.logWindow = blessed.box({
-            left: '66%-2',
-            width: '33%',
-
-            keys: true,
-            mouse: true,
-            input: true,
-            scrollable: true,
-            alwaysScroll: true,
-            scrollbar: {
-                bg: 'blue',
-            },
-            vi: true,
-        })
-
         this.screen.append(this.bidsTable)
         this.screen.append(this.asksTable)
-        this.screen.append(this.logWindow)
 
         this.screen.render()
     }
@@ -68,12 +52,8 @@ export default class BlessedScreen extends Context {
         this.asksData = frame.orderBook.asks
         this.asksData.sort(this.sortAsks)
 
-        this.bidsTable.setData([['quantity', 'price'], ...this.bidsData])
-        this.asksTable.setData([['price', 'quantity'], ...this.asksData])
-
-        // Log something
-        this.logWindow.pushLine(`[${moment().toISOString()}] something`)
-        this.logWindow.setScrollPerc(100)
+        this.bidsTable.setData([['Quantity', 'Bids'], ...this.bidsData])
+        this.asksTable.setData([['Asks', 'Quantity'], ...this.asksData])
 
         this.screen.render()
     }
