@@ -24,7 +24,7 @@
         "babel-preset-env": "1.7.0",
         "bignumber.js": "9.0.0",
         "blessed": "0.1.81",
-        "blessed-contrib": "4.8.19",
+        "blessed-contrib": "4.8.20",
         "dotenv": "8.2.0",
         "moment": "2.25.1",
         "querystring": "0.2.0",
