@@ -16,7 +16,7 @@
         "@babel/core": "7.9.0",
         "@babel/plugin-proposal-class-properties": "7.8.3",
         "@babel/plugin-proposal-export-default-from": "7.8.3",
-        "@babel/preset-env": "7.9.5",
+        "@babel/preset-env": "7.9.6",
         "@babel/preset-stage-0": "7.8.3",
         "@types/uuid": "7.0.3",
         "axios": "0.19.2",
