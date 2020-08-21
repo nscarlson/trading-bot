@@ -19,7 +19,7 @@
         "@babel/preset-env": "7.10.4",
         "@babel/preset-stage-0": "7.8.3",
         "@types/uuid": "8.0.0",
-        "axios": "0.19.2",
+        "axios": "0.20.0",
         "babel-plugin-dynamic-import-node": "2.3.3",
         "babel-preset-env": "1.7.0",
         "bignumber.js": "9.0.0",
