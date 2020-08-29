@@ -1,14 +1,16 @@
 {
-    "editor.formatOnSave": true,
-    "eslint.validate": ["javascript", "typescript"],
-    "eslint.codeAction.disableRuleComment": {
-        "enable": true,
-        "location": "sameLine"
-    },
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+    ],
     "javascript.validate.enable": true,
     "typescript.validate.enable": true,
     "typescript.tsdk": "node_modules/typescript/lib",
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-    }
+        "source.fixAll.eslint": true,
+    },
+    "eslint.format.enable": true,
+    "editor.formatOnSave": true,
 }

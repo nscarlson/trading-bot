@@ -15,10 +15,10 @@
  *   You can have it always focused, however, but my demonstration shows listening for an enter key press or click on the blue bar to focus it.
  * - If you write code that manipulates the screen, remember to run screen.render() to render your changes.
  */
-const moment = require('moment')
+
 const blessed = require('blessed')
 
-var screen = blessed.screen()
+const screen = blessed.screen()
 
 const leftScreen = blessed.box({
     top: 0,
@@ -41,20 +41,19 @@ const logLeft = (text) => {
     leftScreen.setText(text)
     screen.render()
 }
-const logRight = (text) => {
-    rightScreen.setText(text)
-    screen.render()
-}
+// const logRight = (text) => {
+//     screen.render()
+// }
 
 /*
  * Demonstration purposes
  */
 
-var asciichart = require('asciichart')
+const asciichart = require('asciichart')
 
 const drawChart = (scale) => {
-    var s0 = new Array(120)
-    for (var i = 0; i < s0.length; i++) {
+    const s0 = new Array(120)
+    for (let i = 0; i < s0.length; i++) {
         s0[i] = 15 * Math.sin(i * ((Math.PI * scale) / s0.length))
     }
 
@@ -62,11 +61,11 @@ const drawChart = (scale) => {
 }
 
 logLeft(asciichart.plot(drawChart(Math.random() * 10)))
-logRight(asciichart.plot(drawChart(Math.random() * 10)))
+// logRight(asciichart.plot(drawChart(Math.random() * 10)))
 
 // Log example output
 
 setInterval(() => {
     logLeft(asciichart.plot(drawChart(Math.random() * 10)))
-    logRight(asciichart.plot(drawChart(Math.random() * 10)))
+    // logRight(asciichart.plot(drawChart(Math.random() * 10)))
 }, 500)
