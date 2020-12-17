@@ -4946,10 +4946,10 @@ tsutils@^3.17.1:
   dependencies:
     tslib "^1.8.1"
 
-twilio@3.54.0:
-  version "3.54.0"
-  resolved "https://registry.yarnpkg.com/twilio/-/twilio-3.54.0.tgz#dd8a21706899144dd21729d314110c8db90ace5f"
-  integrity sha512-jAM23itfMvpqgm033V55/iOq9vEXe3x5NwOSTFE9ekQWuula06D0iV4Fpj6JyflSbiHfvQqqn/+yPm4yitKHxQ==
+twilio@3.54.1:
+  version "3.54.1"
+  resolved "https://registry.yarnpkg.com/twilio/-/twilio-3.54.1.tgz#d42be0a920d618f756faba46306a69c987f05813"
+  integrity sha512-rUlEGFNAmmnaxYsWvoTib77eycOCIfncveh6SvP3+RbbKpos2wuzhLy0p1gm8FQSAZvjAm2xNVWi5oJRRF8Ueg==
   dependencies:
     axios "^0.19.2"
     dayjs "^1.8.29"
