@@ -1,24 +1,20 @@
-import axios from 'axios'
-import crypto from 'crypto'
-import moment, { duration } from 'moment'
-import querystring from 'querystring'
-import rateLimit from 'function-rate-limit'
-import { v4 as uuidv4 } from 'uuid'
-import Exchange from '../Exchange'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import axios, { AxiosInstance } from 'axios'
+import { Balance, OrderBook } from '../types'
 
-class Binance extends Exchange {
+import crypto from 'crypto'
+import { v4 as uuidv4 } from 'uuid'
+import Exchange from './Exchange'
+
+export default class Bittrex extends Exchange {
     constructor() {
         super({
-            exchangeName: 'bittrex',
+            name: 'bittrex',
         })
 
         this.createV1_1HttpClient()
-
-        this.requestLimit = moment(
-            1200,
-            this.mapDurationName('minutes'),
-        ).valueOf()
-        this.orderLimit = moment(10, this.mapDurationName('seconds')).valueOf()
     }
 
     apiKey = process.env.BITTREX_API_KEY
@@ -28,8 +24,8 @@ class Binance extends Exchange {
 
     exchangeInfo = null
 
-    v1HttpClient = null
-    v3HttpClient = null
+    v1HttpClient: AxiosInstance
+    v3HttpClient: AxiosInstance
 
     requestLimit = null
     orderLimit = null
@@ -68,18 +64,24 @@ class Binance extends Exchange {
         quoteSymbol,
         side,
         type,
+    }: {
+        baseSymbol: string
+        price: string
+        quantity: string
+        quoteSymbol: string
+        side: string
+        type: string
     }) => {
         try {
             const newClientOrderId = uuidv4()
             const symbol = `${quoteSymbol}${baseSymbol}`
             const timestamp = new Date().getTime()
 
-            // TODO: Make this more pleasant and readable
             const totalParams = `newClientOrderId=${newClientOrderId}&symbol=${symbol}&side=${side}&type=${type}&timeInForce=FOK&quantity=${quantity}&price=${price}&timestamp=${timestamp}`
             const signature = this.hmacSha256(totalParams)
 
             console.info(
-                `${moment().format()} | submitting order | ${newClientOrderId} ${type} ${side} ${quantity} ${quoteSymbol} @${price}`,
+                `${new Date().toISOString()} | submitting order | ${newClientOrderId} ${type} ${side} ${quantity} ${quoteSymbol} @${price}`,
             )
 
             const result = (
@@ -93,25 +95,27 @@ class Binance extends Exchange {
                     },
                 )
             ).data
+
+            return result
         } catch (err) {
             console.error(err)
         }
     }
 
     createV1_1HttpClient = () => {
-        console.log(`Initializing ${this.exchangeName} v1 client...`)
+        console.log(`Initializing ${this.name} v1 client...`)
         this.v1HttpClient = axios.create({
             baseURL: 'https://bittrex.com/api/v1.1',
             timeout: 5000,
         })
     }
 
-    getBalances = async (keys) => {
+    getBalances = async (keys: string[]) => {
         try {
             const timestamp = new Date().getTime()
             const totalParams = `timestamp=${timestamp}`
 
-            const balances = (
+            const { balances } = (
                 await this.v3HttpClient.get(`/account?${totalParams}`, {
                     headers: {
                         'X-MBX-APIKEY': this.apiKey,
@@ -120,9 +124,9 @@ class Binance extends Exchange {
                         signature: this.hmacSha256(totalParams),
                     },
                 })
-            ).data.balances
+            ).data
 
-            const filteredBalances = balances.filter((balance) =>
+            const filteredBalances = balances.filter((balance: Balance) =>
                 keys.includes(balance.asset),
             )
 
@@ -141,12 +145,17 @@ class Binance extends Exchange {
         }
     }
 
-    getOrderBook = async ({ baseSymbol, quoteSymbol }) => {
+    getOrderBook = async ({
+        baseSymbol,
+        quoteSymbol,
+    }: {
+        baseSymbol: string
+        quoteSymbol: string
+    }): Promise<OrderBook> => {
         try {
             const result = (
                 await this.v1HttpClient.get('/public/getorderbook', {
                     params: {
-                        limit,
                         market: `${baseSymbol}-${quoteSymbol}`,
                         type: 'both',
                     },
@@ -154,24 +163,22 @@ class Binance extends Exchange {
             ).data
 
             console.log(
-                `${moment().format()} | ${
-                    this.exchangeName
+                `${new Date().toISOString()} | ${
+                    this.name
                 } | orderbook info   | Bid: ${result.bids[0][0]} Ask: ${
                     result.asks[0][0]
                 }`,
             )
+
+            return result
         } catch (err) {
-            console.error(err)
+            throw err
         }
     }
 
-    /**
-     * TODO: Move this to utils if hmac functionality is needed in multiple places
-     * @returns
-     */
-    hmacSha256 = (message) =>
+    hmacSha256 = (message: string) =>
         crypto
-            .createHmac('sha256', this.apiSecretKey)
+            .createHmac('sha256', this.apiSecretKey ?? '')
             .update(message)
             .digest()
             .toString('hex')
@@ -179,6 +186,19 @@ class Binance extends Exchange {
     rateLimitOrders = () => {}
 
     rateLimitRequests = () => {}
-}
 
-export default Binance
+    resyncOrderBook = async () => {}
+
+    subscribeOrderBook = async () => {}
+
+    updateOrderBook = async ({
+        baseSymbol,
+        quoteSymbol,
+    }: {
+        baseSymbol: string
+        quoteSymbol: string
+    }): Promise<OrderBook> => ({
+        bids: [],
+        asks: [],
+    })
+}

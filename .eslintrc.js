@@ -22,9 +22,6 @@ module.exports = {
     parser: '@typescript-eslint/parser',
 
     parserOptions: {
-        ecmaFeatures: {
-            jsx: true,
-        },
         ecmaVersion: 9,
         tsconfigRootDir: '../../',
         sourceType: 'module',
@@ -34,7 +31,6 @@ module.exports = {
         'jest',
         'node',
         'promise',
-        'react',
         '@typescript-eslint',
         'prettier',
     ],
@@ -85,7 +81,6 @@ module.exports = {
         'jest/valid-describe': 'error',
         'jest/valid-expect': 'error',
         'jest/valid-expect-in-promise': 'error',
-        'jsx-quotes': ['error', 'prefer-double'],
         'linebreak-style': ['error', 'unix'],
         'max-len': [
             'error',
@@ -224,74 +219,6 @@ module.exports = {
         'prefer-template': 'error',
         'prettier/prettier': ['error', prettier],
         'promise/param-names': 'error',
-        'react/default-props-match-prop-types': 'error',
-
-        /*
-         * Enable this rule to prevent props like className and styles
-         * from being passed into a custom component
-         */
-        // 'react/forbid-component-props': 'error',
-
-        /*
-         * Enable this rule if we want to force devs to use specific
-         * wrapper components instead of native HTML elements
-         */
-        // 'react/forbid-elements': ['error', ['button']],
-
-        'react/forbid-foreign-prop-types': 'error',
-        'react/forbid-prop-types': 'warn',
-
-        'react/jsx-boolean-value': 'error',
-        'react/jsx-handler-names': 'error',
-        'react/jsx-no-bind': [
-            'error',
-            {
-                allowArrowFunctions: true,
-                allowBind: false,
-                ignoreRefs: true,
-            },
-        ],
-        'react/jsx-no-duplicate-props': 'error',
-        'react/jsx-no-undef': 'error',
-        'react/jsx-pascal-case': 'error',
-        'react/jsx-sort-props': [
-            'error',
-            {
-                ignoreCase: true,
-            },
-        ],
-        'react/jsx-uses-react': 'error',
-        'react/jsx-uses-vars': 'error',
-
-        /*
-         * Note: this rule only applies to an inline cb to Array.prototype.map
-         */
-        'react/no-array-index-key': 'warn',
-        'react/no-children-prop': 'error',
-        'react/no-danger': 'error',
-        'react/no-did-update-set-state': 'error',
-        'react/no-direct-mutation-state': 'error',
-
-        /*
-         * Enable this rule to keep component files simple
-         */
-        'react/no-multi-comp': ['warn', { ignoreStateless: true }],
-
-        'react/no-redundant-should-component-update': 'error',
-        'react/no-render-return-value': 'error',
-        'react/no-string-refs': 'error',
-        'react/no-this-in-sfc': 'error',
-        'react/no-typos': 'error',
-        'react/no-unknown-property': 'error',
-        'react/no-unused-prop-types': 'error',
-        'react/no-unused-state': 'error',
-        'react/prefer-es6-class': 'error',
-        'react/prop-types': 'error',
-        'react/react-in-jsx-scope': 'error',
-        'react/require-default-props': 'error',
-        'react/require-render-return': 'error',
-        'react/self-closing-comp': 'error',
-        'react/void-dom-elements-no-children': 'error',
         'require-yield': 'error',
         'symbol-description': 'error',
         'unicode-bom': ['error', 'never'],
@@ -299,10 +226,5 @@ module.exports = {
         'valid-jsdoc': 'error',
         'valid-typeof': 'error',
         'wrap-iife': ['error', 'inside'],
-    },
-    settings: {
-        react: {
-            version: 'latest',
-        },
     },
 }

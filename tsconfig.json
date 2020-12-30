@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         // Process & infer types from .js files.
-        "allowJs": true,
+        "allowJs": false,
         "allowSyntheticDefaultImports": true,
         "composite": true,
         "declaration": true,
@@ -30,6 +30,10 @@
         // Target latest version of ECMAScript.
         "target": "es2015"
     },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules"]
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }

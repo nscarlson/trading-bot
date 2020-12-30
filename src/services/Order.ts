@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 class Order {
-    constructor({ exchange, price, quantity, side, timeInForce, type }) {
-        super()
-
+    constructor({ price, quantity, side, timeInForce, type }: any) {
         this.price = price
         this.quantity = quantity
         this.side = side

@@ -18,7 +18,7 @@
 
 const blessed = require('blessed')
 
-const screen = blessed.screen()
+const blessedScreen = blessed.screen()
 
 const leftScreen = blessed.box({
     top: 0,
@@ -32,14 +32,14 @@ const leftScreen = blessed.box({
 })
 
 // Add body to blessed screen
-screen.append(leftScreen)
+blessedScreen.append(leftScreen)
 
 // Close the example on Escape, Q, or Ctrl+C
-screen.key(['C-c'], (ch, key) => process.exit(0))
+blessedScreen.key(['C-c'], () => process.exit(0))
 
-const logLeft = (text) => {
+const logLeft = (text: string) => {
     leftScreen.setText(text)
-    screen.render()
+    blessedScreen.render()
 }
 // const logRight = (text) => {
 //     screen.render()
@@ -51,7 +51,7 @@ const logLeft = (text) => {
 
 const asciichart = require('asciichart')
 
-const drawChart = (scale) => {
+const drawChart = (scale: number) => {
     const s0 = new Array(120)
     for (let i = 0; i < s0.length; i++) {
         s0[i] = 15 * Math.sin(i * ((Math.PI * scale) / s0.length))

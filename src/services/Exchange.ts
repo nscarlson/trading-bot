@@ -1,6 +1,11 @@
-import OrderBook from '../../../../OrderBook'
+import { OrderBook } from '../types'
 
 export default abstract class Exchange {
+    constructor({ name }: { name: string }) {
+        this.name = name
+    }
+
+    name: string
     orderBook: OrderBook
 
     public abstract getOrderBook({
@@ -27,11 +32,9 @@ export default abstract class Exchange {
         quoteSymbol: string
     }): Promise<void>
 
-    // public abstract subscribeToOrderBook({
-    //     baseSymbol,
-    //     quoteSymbol,
-    // }: {
-    //     baseSymbol: string
-    //     quoteSymbol: string
-    // }): Promise<void>
+    public abstract subscribeOrderBook(
+        baseSymbol: string,
+        quoteSymbol: string,
+        callback: (arg: unknown) => void,
+    ): Promise<void>
 }

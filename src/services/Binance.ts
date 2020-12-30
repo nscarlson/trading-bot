@@ -1,13 +1,15 @@
+/* eslint-disable complexity */
 import axios, { AxiosInstance } from 'axios'
 import crypto from 'crypto'
-// import moment from 'moment'
-// import { v4 as uuidv4 } from 'uuid'
-import Exchange from '../Exchange'
-import OrderBook from '../../../../OrderBook'
+import WebSocket from 'ws'
+
+import Exchange from './Exchange'
+import { OrderBook } from '../types'
+import Order from '../services/Order'
 
 class Binance extends Exchange {
     constructor() {
-        super()
+        super({ name: 'binance' })
         this.createV1HttpClient()
         this.createV3HttpClient()
     }
@@ -23,32 +25,34 @@ class Binance extends Exchange {
         asks: [],
     }
 
-    // getOrder = async ({
-    //     baseSymbol,
-    //     newClientOrderId,
-    //     orderId,
-    //     origClientOrderId,
-    //     quoteSymbol,
-    // }) => {
-    //     try {
-    //         symbol: `${quoteSymbol}${baseSymbol}`
+    getOrder = async ({
+        baseSymbol,
+        quoteSymbol,
+    }: {
+        baseSymbol: string
+        quoteSymbol: string
+    }): Promise<Order | void> => {
+        try {
+            const timestamp = new Date().getTime()
 
-    //         const timestamp = new Date().getTime()
+            const totalParams = `timestamp=${timestamp}`
 
-    //         const totalParams = `timestamp=${timestamp}`
+            const order: Order = (
+                await this.v3HttpClient.get(`/order${totalParams}`, {
+                    headers: {
+                        'X-MBX-APIKEY': this.apiKey,
+                    },
+                    params: {
+                        symbol: `${quoteSymbol}${baseSymbol}`,
+                    },
+                })
+            ).data
 
-    //         const order = (await this.v3HttpClient.get(`/order${totalParams}`, {
-    //             headers: {
-    //                 'X-MBX-APIKEY': this.apiKey,
-    //             },
-    //             params: {
-    //                 symbol: `${quoteSymbol}${baseSymbol}`,
-    //             },
-    //         })).data
-    //     } catch(err) {
-    //         console.error(err)
-    //     }
-    // }
+            return order
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
     // createOrder = async ({
     //     baseSymbol,
@@ -63,7 +67,6 @@ class Binance extends Exchange {
     //         const symbol = `${quoteSymbol}${baseSymbol}`
     //         const timestamp = new Date().getTime()
 
-    //         // TODO: Make this more pleasant and readable
     //         const totalParams = `newClientOrderId=${newClientOrderId}&symbol=${symbol}&side=${side}&type=${type}&timeInForce=FOK&quantity=${quantity}&price=${price}&timestamp=${timestamp}`
     //         const signature = this.hmacSha256(totalParams)
 
@@ -88,7 +91,7 @@ class Binance extends Exchange {
     //     }
     // }
 
-    createV1HttpClient = () => {
+    createV1HttpClient = (): void => {
         console.log('Initializing Binance v1 client...')
         this.v1HttpClient =
             axios.create({
@@ -97,7 +100,7 @@ class Binance extends Exchange {
             }) || undefined
     }
 
-    createV3HttpClient = () => {
+    createV3HttpClient = (): void => {
         console.log('Initializing Binance v3 connection...')
         this.v3HttpClient = axios.create({
             baseURL: 'https://api.binance.com/api/v3',
@@ -157,12 +160,10 @@ class Binance extends Exchange {
             const transformResponse = (data: {
                 asks: string[][]
                 bids: string[][]
-            }): OrderBook => {
-                return {
-                    asks: data.asks,
-                    bids: data.bids,
-                }
-            }
+            }): OrderBook => ({
+                asks: data.asks,
+                bids: data.bids,
+            })
 
             const result: OrderBook = (
                 await this.v1HttpClient.get<OrderBook>('/depth', {
@@ -205,8 +206,6 @@ class Binance extends Exchange {
         newBids: string[][]
     }): Promise<OrderBook> => {
         try {
-            // TODO: review algorithmic complexity and optimize accordingly
-
             if (!this.orderBook.asks.length && !this.orderBook.bids.length) {
                 this.orderBook = await this.getOrderBook({
                     baseSymbol,
@@ -217,7 +216,7 @@ class Binance extends Exchange {
             for (const newAsk of newAsks) {
                 if (newAsk[1] === '0.00000000') {
                     const index = this.orderBook.asks.findIndex(
-                        ([price, volume]) => price === newAsk[0],
+                        (price) => price[0] === newAsk[0],
                     )
 
                     if (~index) {
@@ -225,7 +224,7 @@ class Binance extends Exchange {
                     }
                 } else {
                     const index = this.orderBook.asks.findIndex(
-                        ([price, volume]) => price === newAsk[0],
+                        (price) => price[0] === newAsk[0],
                     )
 
                     if (~index) {
@@ -239,7 +238,7 @@ class Binance extends Exchange {
             for (const newBid of newBids) {
                 if (newBid[1] === '0.00000000') {
                     const index = this.orderBook.bids.findIndex(
-                        ([price, volume]) => price === newBid[0],
+                        (price) => price[0] === newBid[0],
                     )
 
                     if (~index) {
@@ -247,7 +246,7 @@ class Binance extends Exchange {
                     }
                 } else {
                     const index = this.orderBook.bids.findIndex(
-                        ([price, volume]) => price === newBid[0],
+                        (price) => price[0] === newBid[0],
                     )
 
                     if (~index) {
@@ -272,21 +271,62 @@ class Binance extends Exchange {
     }: {
         baseSymbol: string
         quoteSymbol: string
-    }) => {
+    }): Promise<void> => {
         this.orderBook = await this.getOrderBook({
             baseSymbol,
             quoteSymbol,
         })
     }
 
-    hmacSha256 = (message: string) =>
+    subscribeOrderBook = async (
+        baseSymbol: string,
+        quoteSymbol: string,
+        callback: (arg: unknown) => void,
+    ): Promise<void> => {
+        // TODO: manage websockets dynamically elsewhere
+        const ws = new WebSocket(
+            'wss://stream.binance.com:9443/ws/btcusd@depth',
+        )
+
+        ws.on('open', () =>
+            ws.send(
+                JSON.stringify({
+                    method: 'SUBSCRIBE',
+                    params: ['btcusdt@depth'],
+                    id: 312,
+                }),
+            ),
+        )
+
+        ws.on('message', async (data: string) => {
+            const parsedData = JSON.parse(data)
+
+            await this.getOrderBook({
+                baseSymbol: 'USDT',
+                quoteSymbol: 'BTC',
+            })
+
+            const updatedOrderBook = await this.updateOrderBook({
+                baseSymbol,
+                quoteSymbol,
+                newAsks: parsedData.a,
+                newBids: parsedData.b,
+            })
+
+            callback(updatedOrderBook)
+        })
+
+        ws.on('error', (err) => console.log(err))
+    }
+
+    hmacSha256 = (message: string): string =>
         crypto
             .createHmac('sha256', this.apiSecretKey)
             .update(message)
             .digest()
             .toString('hex')
 
-    sortOrderBook = () => {
+    sortOrderBook = (): void => {
         const sortBids = (a: string[], b: string[]) =>
             parseFloat(b[0]) - parseFloat(a[0])
 
