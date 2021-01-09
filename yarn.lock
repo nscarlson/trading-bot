@@ -2019,10 +2019,10 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.1.0.tgz#30fa40c9e7fe07dbc895678cd287024dea241dd9"
   integrity sha512-1Yj8h9Q+QDF5FzhMs/c9+6UntbD5MkRfRwac8DoEm9ZfUBZ7tZ55YcGVAzEe4bXsdQHEk+s9S5wsOKVdZrw0tQ==
 
-blessed-contrib@4.8.20:
-  version "4.8.20"
-  resolved "https://registry.yarnpkg.com/blessed-contrib/-/blessed-contrib-4.8.20.tgz#687f151ef85307fa43eaec53297fa54ef2a9e241"
-  integrity sha512-jLLXR9pjjm/T2jY0Q8OCCpuDquWiMULkPyT8YNaiLUR0j1MchTQK/Q7SiuD63jn9ekn9BrohwP1Kom/FylmeHQ==
+blessed-contrib@4.8.21:
+  version "4.8.21"
+  resolved "https://registry.yarnpkg.com/blessed-contrib/-/blessed-contrib-4.8.21.tgz#47c3df41dd5bd35e09dada830d41c38ff3d1cc97"
+  integrity sha512-zdQMO3UyfhdG0S+Zqn7YexI6BHlnO26qxBKc9jzgyZdIoq7nELiGM/V89CvrTPblZGQr3eMUqCy7pxlKm3vCYA==
   dependencies:
     ansi-term ">=0.0.2"
     chalk "^1.1.0"
