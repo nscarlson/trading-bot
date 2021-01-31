@@ -39,7 +39,7 @@
         "blessed-contrib": "4.8.20",
         "date-fns": "^2.16.1",
         "dotenv": "8.2.0",
-        "eslint": "7.16.0",
+        "eslint": "7.19.0",
         "eslint-config-prettier": "7.1.0",
         "eslint-plugin-graphql": "4.0.0",
         "eslint-plugin-import": "2.20.2",
