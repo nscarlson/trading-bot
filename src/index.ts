@@ -1,3 +1,3 @@
 require('dotenv').config()
 
-require('./services/engine')
+require('./server')
