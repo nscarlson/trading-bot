@@ -2,6 +2,16 @@ export interface Balance {
     asset: string
 }
 
+export interface Candle {
+    s: string // symbol
+    t: string // timestamp interval opened
+    o: string // open
+    h: string // high
+    l: string // low
+    c: string // close
+    v: string // volume in interval
+}
+
 export enum OrderType {
     Market = 'MARKET',
 }
