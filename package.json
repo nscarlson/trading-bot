@@ -34,7 +34,7 @@
         "babel-eslint": "10.1.0",
         "babel-plugin-dynamic-import-node": "2.3.3",
         "babel-preset-env": "1.7.0",
-        "bignumber.js": "9.0.1",
+        "bignumber.js": "9.1.2",
         "blessed": "0.1.81",
         "blessed-contrib": "4.8.21",
         "date-fns": "^2.16.1",
