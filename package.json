@@ -36,7 +36,7 @@
         "babel-preset-env": "1.7.0",
         "bignumber.js": "9.1.2",
         "blessed": "0.1.81",
-        "blessed-contrib": "4.8.21",
+        "blessed-contrib": "4.11.0",
         "date-fns": "^2.16.1",
         "dotenv": "16.4.5",
         "eslint": "7.19.0",
