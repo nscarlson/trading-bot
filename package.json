@@ -55,7 +55,7 @@
         "source-map-support": "0.5.21",
         "twilio": "5.1.0",
         "typescript": "5.4.5",
-        "uuid": "9.0.1",
+        "uuid": "10.0.0",
         "ws": "8.17.0"
     }
 }
