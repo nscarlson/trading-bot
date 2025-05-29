@@ -1641,10 +1641,19 @@ available-typed-arrays@^1.0.7:
   dependencies:
     possible-typed-array-names "^1.0.0"
 
-axios@1.7.2, axios@^1.6.8:
+axios@1.7.2:
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.2.tgz#b625db8a7051fbea61c35a3cbb3a1daa7b9c7621"
   integrity sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==
+  dependencies:
+    follow-redirects "^1.15.6"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
+
+axios@^1.8.3:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.9.0.tgz#25534e3b72b54540077d33046f77e3b8d7081901"
+  integrity sha512-re4CqKTJaURpzbLHtIi6XpDv20/CnpXOtjRY5/CU32L8gU8ek9UIivcfvSWvmKEngmVbrUtPpdDwWDWL7DNHvg==
   dependencies:
     follow-redirects "^1.15.6"
     form-data "^4.0.0"
@@ -4950,12 +4959,12 @@ tslib@~2.3.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
 
-twilio@5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/twilio/-/twilio-5.1.0.tgz#7561a79d6031854d5e723388909b3206eb30dfdb"
-  integrity sha512-8nIarHCbFwBsN7/KyDbQyRszMpmheUsx9hhaWOt0UfNzX/U8rG/W9dVbq/njjK6iCaR+5JIQipcbCF15EnqqBg==
+twilio@5.7.0:
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/twilio/-/twilio-5.7.0.tgz#01df3e84c444c884c4115276f233232ba09dbb9e"
+  integrity sha512-AcN9jo/C0sFitprIg2G6CJF+EACvff+8fiTMxf7Puz+6jtmc0NgJTwmyQbPiAnJcpXWOrPdI92Obr3PV4ZKXkw==
   dependencies:
-    axios "^1.6.8"
+    axios "^1.8.3"
     dayjs "^1.11.9"
     https-proxy-agent "^5.0.0"
     jsonwebtoken "^9.0.2"
